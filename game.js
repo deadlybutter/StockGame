@@ -5,7 +5,6 @@ const TRADE_ALTER = 0.25;
 
 var stockPrice = 0;
 rootRef.child('price').on('value', function(data) {
-
   stockPrice = data.val();
 });
 

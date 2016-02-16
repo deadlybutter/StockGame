@@ -51,6 +51,11 @@ app.post('/buy', function(req, res) {
   res.json(req.wallet);
 });
 
+app.post('/sell', function(req, res) {
+  game.sell(req.wallet);
+  res.json(req.wallet);
+});
+
 var server = app.listen(process.env.PORT, function() {
  console.log('Listening on port %d', server.address().port);
 });
