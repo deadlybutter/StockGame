@@ -4,9 +4,14 @@ var rootRef = new Firebase(process.env.FIREBASE_URL);
 const TRADE_ALTER = 0.25;
 
 var stockPrice = 0;
+
 rootRef.child('price').on('value', function(data) {
-  stockPrice = data.val();
+  stockPrice = parseInt(data.val());
 });
+
+function updatePrice(newPrice) {
+  rootRef.child('price').set(newPrice);
+}
 
 this.buy = function(wallet) {
   updatePrice(stockPrice - TRADE_ALTER);
@@ -26,7 +31,3 @@ this.sell = function(wallet) {
 this.getStockPrice = function() {
   return stockPrice;
 };
-
-function updatePrice(newPrice) {
-  rootRef.child('price').set(newPrice);
-}

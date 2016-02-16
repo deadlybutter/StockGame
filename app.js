@@ -14,7 +14,7 @@ app.use(session({
 }));
 
 app.use(function(req, res, next) {
-  if (req.wallet == undefined || req.wallet.bal == undefined) {
+  if (req.wallet == undefined || req.wallet.bal == undefined || req.wallet.stock == undefined) {
     req.wallet.bal = game.getStockPrice() * 5;
     req.wallet.stock = 0;
   }
@@ -26,7 +26,8 @@ app.get('/', function(req, res){
 });
 
 app.post('/reset', function(req, res) {
-  req.wallet = {};
+  req.wallet.bal = 0;
+  req.wallet.stock = 0;
   res.send("OK");
 });
 

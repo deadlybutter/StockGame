@@ -3,10 +3,131 @@
 
 <head>
   <title>TRADE TRADE TRADE!</title>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .group {
+      text-align: center;
+      display: block;
+      padding: 16px 0;
+    }
+
+    .group_button button {
+      display: inline-block;
+      padding: 8px;
+      font-size: 16px;
+      margin: 8px;
+      width: 128px;
+    }
+
+    .side {
+      display: inline-block;
+      padding: 8px;
+    }
+
+    /*.side:first-child {
+      border-right: 1px solid black;
+    }
+
+    .side:last-child {
+      padding-left: 0;*/
+    }
+
+  </style>
 </head>
 
 <body>
-  <h1>yo</h1>
+  <div class="container">
+    <div class="group">
+      <h3>Price of Stock</h3>
+      <h1 id="price">$00.00</h1>
+    </div>
+    <div class="group group_button">
+      <button id="buy">BUY</button>
+      <button id="sell">SELL</button>
+    </div>
+    <div class="group">
+      <div class="side">
+        <h3>Your Balance</h3>
+        <h1 id="bal">$00.00</h1>
+      </div>
+      <div class="side">
+        <h3>Your Portfolio</h3>
+        <h1 id="stock">0 Stocks</h1>
+      </div>
+    </div>
+  </div>
+
+  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script>
+
+    function updateAssets(assets) {
+      $('#bal').text(assets.bal);
+      $('#stock').text(assets.stock);
+    }
+
+    function updatePrice(price) {
+      $('#price').text(price);
+    }
+
+    function getStats() {
+      $.get('/stats', function(data) {
+        updatePrice(data.market.price);
+        updateAssets(data.user);
+      });
+    }
+
+    function getPrice() {
+      $.get('/price', function(data) {
+        updatePrice(data.price);
+      });
+    }
+
+    function buy() {
+      $.post('/buy', function(data) {
+        updateAssets(data);
+      });
+    }
+
+    function sell() {
+      $.post('/sell', function(data) {
+        updateAssets(data);
+      });
+    }
+
+    function reset() {
+      $.post('/reset', function(data) {
+        console.log("Reset...");
+        getStats();
+      });
+    }
+
+    $(document).on('ready', function() {
+
+      getStats();
+      setInterval(getPrice, 1000);
+
+      $('#buy').on('click', function() {
+        buy();
+      });
+
+      $('#sell').on('click', function() {
+        sell();
+      });
+    });
+  </script>
+
 </body>
 
 </html>
