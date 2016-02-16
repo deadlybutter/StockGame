@@ -1,4 +1,5 @@
 node_modules/
+vars.env
 
 # Logs
 logs
